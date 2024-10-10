@@ -10,29 +10,33 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean install'
+        pipeline {
+            agent any
+
+            stages {
+                stage('Build') {
+                    steps {
+                        bat 'mvn clean install'
+                    }
+                }
+
+                stage('Test') {
+                    steps {
+                        bat 'mvn test'
+                    }
+                }
+
+                stage('Code Coverage') {
+                    steps {
+                        bat 'mvn jacoco:report'
+                    }
+                }
+            }
+
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                    jacoco execPattern: '**/target/jacoco.exec'
+                }
             }
         }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-
-        stage('Code Coverage') {
-            steps {
-                jacoco execPattern: '**/target/jacoco.exec'
-            }
-        }
-    }
-
-    post {
-        always {
-            junit '**/target/surefire-reports/*.xml'
-            jacoco execPattern: '**/target/jacoco.exec'
-        }
-    }
-}
