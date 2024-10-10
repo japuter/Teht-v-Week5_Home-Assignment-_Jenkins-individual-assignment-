@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://your-repo-url.git', branch: 'main' // Update with your repository URL
+                git url: 'https://github.com/japuter/Teht-v-Week5_Home-Assignment-_Jenkins-individual-assignment-.git', branch: 'master'
+
+
             }
         }
 
